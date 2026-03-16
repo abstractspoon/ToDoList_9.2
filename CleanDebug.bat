@@ -1,9 +1,9 @@
-title ToDoList_Dev Debug Clean
+title ToDoList_9.2 Debug Clean
 
 ECHO OFF
 CLS
 
-ECHO ToDoList_Dev Debug Clean
+ECHO ToDoList_9.2 Debug Clean
 ECHO ========================
 ECHO:
 

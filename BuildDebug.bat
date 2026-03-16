@@ -1,9 +1,9 @@
-title ToDoList_Dev Debug Build
+title ToDoList_9.2 Debug Build
 
 ECHO OFF
 CLS
 
-ECHO ToDoList_Dev Debug Build
+ECHO ToDoList_9.2 Debug Build
 ECHO ========================
 ECHO:
 

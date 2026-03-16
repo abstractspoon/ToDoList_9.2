@@ -131,7 +131,7 @@ ECHO [42m Versioning SUCCEEDED[0m
 
 REM Save symbols to their own zip file
 ECHO:
-ECHO Zipping symbols
+ECHO Zipping Symbols
 ECHO ===============
 ECHO:
 
@@ -159,7 +159,7 @@ REM Check for errors
 FINDSTR /C:"The system cannot find the file specified." %OUTPUT_FILE%
    
 IF %errorlevel%==0 (
-ECHO [41m Symbols FAILED[0m
+ECHO [41m Zipping Symbols FAILED[0m
 ECHO:
 REM Open the log
 %OUTPUT_FILE%
@@ -168,7 +168,7 @@ EXIT
 )
  
 REM SUCCESS! 
-ECHO [42m Symbols SUCCEEDED[0m
+ECHO [42m Zipping Symbols SUCCEEDED[0m
 
 REM - Zip up app and resources
 ECHO:

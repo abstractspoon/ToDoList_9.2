@@ -1,9 +1,9 @@
-title ToDoList_Dev Release Clean
+title ToDoList_9.2 Release Clean
 
 ECHO OFF
 CLS
 
-ECHO ToDoList_Dev Release Clean
+ECHO ToDoList_9.2 Release Clean
 ECHO ==========================
 ECHO:
 
