@@ -580,11 +580,11 @@ BOOL CTreeListSyncer::ResyncScrollPos(HWND hwnd, HWND hwndTo)
 		{
 			int nItemHeight = max(GetItemHeight(hwndTo), GetItemHeight(hwnd));
 			ListView_Scroll(hwnd, 0, (nEquivFirstVisItem - nFirstVisItem) * nItemHeight);
+			
+			bSynced = TRUE;
 		}
 		
 		ResyncListHeader(hwnd);
-
-		bSynced = TRUE;
 	}
 	
 	if (bSynced)
@@ -2768,6 +2768,23 @@ LRESULT CTreeListSyncer::ScWindowProc(HWND hRealWnd, UINT msg, WPARAM wp, LPARAM
 			PostResync(hRealWnd, FALSE);
 		break;
 
+	case WM_KEYDOWN:
+		switch (wp)
+		{
+		case VK_UP:
+		case VK_DOWN:
+		case VK_PRIOR:
+		case VK_NEXT:
+			{
+				lr = ScDefault(hRealWnd);
+				bDoneDefault = TRUE;
+
+				ResyncScrollPos(OtherWnd(hRealWnd), hRealWnd);
+			}
+			break;
+		}
+		break;
+
 	case WM_KEYUP:
 		switch (wp)
 		{
@@ -2789,7 +2806,15 @@ LRESULT CTreeListSyncer::ScWindowProc(HWND hRealWnd, UINT msg, WPARAM wp, LPARAM
 	case WM_SETFOCUS:
 		if (HasFlag(TLSF_SYNCFOCUS))
 		{
-			InvalidateAll(FALSE, TRUE);
+			HWND hwndOther = OtherWnd(hRealWnd);
+
+			// If we're simply switching between the two panes
+			// then no redraw is required
+			if (wp && ((HWND)wp == hwndOther))
+				return 0L; // eat
+
+			// else
+			InvalidateAll();
 		}
 		break;
 
