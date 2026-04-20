@@ -542,8 +542,11 @@ LRESULT CTDLTaskTreeCtrl::OnTreeCustomDraw(NMTVCUSTOMDRAW* pTVCD)
 		break;
 		
 	case CDDS_ITEMPOSTPAINT:
-		// Below Vista filling the background overwrites the tree insertion marker
-		dwRes = OnPostPaintTaskTitle(pTVCD->nmcd, pTVCD->nmcd.rc, !OsIsLinux());
+		{
+			// On Linux filling the background overwrites the tree insertion marker
+			BOOL bFillRow = !OsIsLinux();
+			dwRes = OnPostPaintTaskTitle(pTVCD->nmcd, pTVCD->nmcd.rc, bFillRow);
+		}
 		break;
 	}
 	
