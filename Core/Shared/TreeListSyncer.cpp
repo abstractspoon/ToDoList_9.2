@@ -593,6 +593,30 @@ BOOL CTreeListSyncer::ResyncScrollPos(HWND hwnd, HWND hwndTo)
 	return bSynced;
 }
 
+void CTreeListSyncer::ClearListSelection(HWND hwndList, DWORD dwMask)
+{
+	ASSERT(IsList(hwndList));
+
+	// Up to a certain (arbitrary) point it's more efficient
+	// to iterate the selected items, deselecting them in turn,
+	// than it is to clear the selection on all (-1) items
+	if ((int)ListView_GetSelectedCount(hwndList) < ListView_GetCountPerPage(hwndList))
+	{
+		int nItem = ListView_GetNextItem(hwndList, -1, dwMask);
+		
+		while (nItem != -1)
+		{
+			ListView_SetItemState(hwndList, nItem, 0, dwMask);
+			nItem = ListView_GetNextItem(hwndList, nItem, dwMask);
+		}
+		
+		return;
+	}
+
+	// All else
+	ListView_SetItemState(hwndList, -1, 0, dwMask);
+}
+
 BOOL CTreeListSyncer::ResyncListToTreeSelection(HWND hwndTree, const CList<HTREEITEM, HTREEITEM>& htItems, HTREEITEM htiFocused)
 {
 	ASSERT(IsTree(hwndTree));
@@ -604,8 +628,7 @@ BOOL CTreeListSyncer::ResyncListToTreeSelection(HWND hwndTree, const CList<HTREE
 		return FALSE;
 
 	CAutoFlag af(m_bResyncing, TRUE);
-
-	ListView_SetItemState(hwndList, -1, 0, LVIS_SELECTED);
+	ClearListSelection(hwndList);
 
 	POSITION pos = htItems.GetHeadPosition();
 
@@ -698,7 +721,7 @@ BOOL CTreeListSyncer::ResyncSelection(HWND hwnd, HWND hwndTo, BOOL bClearTreeSel
 	else if (IsList(hwnd) && IsList(hwndTo)) // syncing list to list
 	{
 		// clear existing selection first
-		ListView_SetItemState(hwnd, -1, 0, LVIS_SELECTED);
+		ClearListSelection(hwnd);
 		
 		// then update
 		int nSelTo = ListView_GetNextItem(hwndTo, -1, LVIS_SELECTED);

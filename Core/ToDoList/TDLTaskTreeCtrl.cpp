@@ -207,7 +207,7 @@ void CTDLTaskTreeCtrl::DeselectAll()
 	TSH().RemoveAll();
 	TCH().SelectItem(NULL);
 
-	m_lcColumns.SetItemState(-1, 0, LVIS_SELECTED | LVIS_FOCUSED);
+	ClearListSelection(m_lcColumns);
 }
 
 BOOL CTDLTaskTreeCtrl::SelectAll(BOOL bVisibleOnly)
