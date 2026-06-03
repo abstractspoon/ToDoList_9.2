@@ -277,8 +277,36 @@ BOOL TDCREMINDER::GetReminderDate(COleDateTime& date, BOOL bIncludeSnooze) const
 
 	date = dtAbsolute;
 	
-	if (bRelative && GetRelativeToDate(date))
-		date -= dRelativeDaysLeadIn;
+	if (bRelative)
+	{
+		if (!GetRelativeToDate(date))
+			return FALSE;
+
+		// Temporary fix for 9.2 for handling periods 
+		// greater than or equal to one month
+		if (dRelativeDaysLeadIn >= 30.0)
+		{
+			CTwentyFourSevenWeek week;
+			CDateHelper dh(week);
+
+			if (dRelativeDaysLeadIn < 365.0)
+			{
+				ASSERT(fmod(dRelativeDaysLeadIn, 30.0) == 0.0);
+
+				dh.OffsetDate(date, -((int)dRelativeDaysLeadIn / 30), DHU_MONTHS);
+			}
+			else
+			{
+				ASSERT(dRelativeDaysLeadIn == 365.0);
+
+				dh.OffsetDate(date, -1, DHU_YEARS);
+			}
+		}
+		else
+		{
+			date.m_dt -= dRelativeDaysLeadIn;
+		}
+	}
 	
 	NULLDATE_CHECKRET(date, FALSE);
 
