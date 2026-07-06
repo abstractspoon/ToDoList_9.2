@@ -847,7 +847,7 @@ BOOL CKanbanCtrl::AddTaskToData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, DW
 		pKI->bFlagged = (pTasks->IsTaskFlagged(hTask, false) ? TRUE : FALSE); // NOT calculated
 		pKI->nPosition = pTasks->GetTaskPosition(hTask);
 		pKI->sFullPosition = pTasks->GetTaskPositionString(hTask); // for 'Unsorting'
-		pKI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+		pKI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		pKI->SetColor(pTasks->GetTaskTextColor(hTask));
 
@@ -1078,7 +1078,7 @@ BOOL CKanbanCtrl::UpdateData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, BOOL 
 
 			pKI->bLocked = pTasks->IsTaskLocked(hTask, true); // calculated
 			pKI->bParent = pTasks->IsTaskParent(hTask);
-			pKI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+			pKI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 		}
 	}
 		

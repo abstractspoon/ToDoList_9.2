@@ -737,7 +737,7 @@ BOOL CGanttCtrl::UpdateTask(const ITASKLISTBASE* pTasks, HTASKITEM hTask, IUI_UP
 		// Always update these
 		pGI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pGI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
-		pGI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+		pGI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 	}
 
 	// detect update
@@ -927,7 +927,7 @@ void CGanttCtrl::BuildTreeItem(const ITASKLISTBASE* pTasks, HTASKITEM hTask,
 		pGI->nPercent = pTasks->GetTaskPercentDone(hTask, TRUE);
 		pGI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pGI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
-		pGI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+		pGI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		time64_t tDate = 0;
 
@@ -1600,7 +1600,7 @@ void CGanttCtrl::OnTreeGetDispInfo(NMHDR* pNMHDR, LRESULT* /*pResult*/)
 		{
 			pDispInfo->item.state = TCHC_CHECKED;
 		}
-		else if (pGI->bSomeSubtaskDone && HasOption(GTLCF_SHOWMIXEDCOMPLETIONSTATE))
+		else if (pGI->bPartlyDone && HasOption(GTLCF_SHOWMIXEDCOMPLETIONSTATE))
 		{
 			pDispInfo->item.state = TCHC_MIXED;
 		}

@@ -711,7 +711,7 @@ BOOL CWorkloadCtrl::UpdateTask(const ITASKLISTBASE* pTasks, HTASKITEM hTask, IUI
 		// Always update these
 		pWI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pWI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
-		pWI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+		pWI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 		pWI->bParent = pTasks->IsTaskParent(hTask);
 	}
 
@@ -945,7 +945,7 @@ void CWorkloadCtrl::BuildTreeItem(const ITASKLISTBASE* pTasks, HTASKITEM hTask,
 		pWI->nPercent = pTasks->GetTaskPercentDone(hTask, TRUE);
 		pWI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pWI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
-		pWI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
+		pWI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		GetTaskAllocTo(pTasks, hTask, pWI->aAllocTo);
 		Misc::AppendItems(pWI->aAllocTo, m_aAllocTo, TRUE);
@@ -1668,7 +1668,7 @@ void CWorkloadCtrl::OnTreeGetDispInfo(NMHDR* pNMHDR, LRESULT* /*pResult*/)
 		{
 			pDispInfo->item.state = TCHC_CHECKED;
 		}
-		else if (pWI->bSomeSubtaskDone && HasOption(WLCF_SHOWMIXEDCOMPLETIONSTATE))
+		else if (pWI->bPartlyDone && HasOption(WLCF_SHOWMIXEDCOMPLETIONSTATE))
 		{
 			pDispInfo->item.state = TCHC_MIXED;
 		}
