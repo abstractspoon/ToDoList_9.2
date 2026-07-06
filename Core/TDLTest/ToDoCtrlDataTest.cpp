@@ -185,7 +185,6 @@ void CToDoCtrlDataTest::TestDataModelCalculationPerformance(const CToDoCtrlData&
 
 	for (DWORD dwTaskID = 1; dwTaskID <= dwMaxTaskID; dwTaskID++)
 	{
-		calc.GetTaskSubtaskCompletion(dwTaskID);
 		calc.GetTaskTimeEstimate(dwTaskID, TDCU_DAYS);
 		calc.GetTaskTimeSpent(dwTaskID, TDCU_DAYS);
 		calc.GetTaskPercentDone(dwTaskID);
