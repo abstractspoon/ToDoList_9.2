@@ -323,7 +323,7 @@ public:
 	BOOL IncrementSelectedTaskPriority(BOOL bUp = TRUE); // +ve or -ve
 	void SetPercentDoneIncrement(int nAmount);
 
-	void BeginSelectedTaskEdit();
+	void BeginSelectedTaskEdit(BOOL bNewTask);
 	void EndSelectedTaskEdit();
 
 	// time tracking
