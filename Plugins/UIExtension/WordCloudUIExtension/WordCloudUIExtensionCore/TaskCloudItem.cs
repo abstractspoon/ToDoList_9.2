@@ -43,7 +43,7 @@ namespace WordCloudUIExtension
 		public Boolean IsParent;
         public Boolean IsLocked;
         public Boolean IsGoodAsDone;
-        public Boolean HasSomeSubtasksDone;
+        public Boolean IsPartlyDone;
 
         private System.Drawing.Color taskTextColor = System.Drawing.Color.Empty;
             
@@ -114,7 +114,7 @@ namespace WordCloudUIExtension
             IsParent = task.IsParent();
             IsLocked = task.IsLocked(true);
             IsGoodAsDone = task.IsGoodAsDone();
-            HasSomeSubtasksDone = task.HasSomeSubtasksDone();
+            IsPartlyDone = task.IsPartlyDone();
 
 			if (newTask)
 			{

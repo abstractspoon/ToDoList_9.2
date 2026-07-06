@@ -870,7 +870,7 @@ namespace WordCloudUIExtension
             if (taskItem.IsDone(false))
                 return CheckBoxState.CheckedNormal;
 
-            if (taskItem.HasSomeSubtasksDone && ShowMixedCompletionState)
+            if (taskItem.IsPartlyDone && ShowMixedCompletionState)
                 return CheckBoxState.MixedNormal;
 
             // else

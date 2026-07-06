@@ -595,7 +595,6 @@ namespace EvidenceBoardUIExtension
 			case Task.Attribute.DueDate:
 			case Task.Attribute.DoneDate:
 			case Task.Attribute.Position:
-			case Task.Attribute.SubtaskDone:
 			case Task.Attribute.MetaData:
 			case Task.Attribute.FileLink:
 			case Task.Attribute.Dependency:

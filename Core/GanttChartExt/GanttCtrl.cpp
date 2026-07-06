@@ -523,7 +523,6 @@ BOOL CGanttCtrl::WantEditUpdate(TDC_ATTRIBUTE nAttribID)
 	case TDCA_NONE:
 	case TDCA_PERCENT:
 	case TDCA_STARTDATE:
-	case TDCA_SUBTASKDONE:
 	case TDCA_TAGS:
 	case TDCA_TASKNAME:
 		return TRUE;
@@ -710,12 +709,6 @@ BOOL CGanttCtrl::UpdateTask(const ITASKLISTBASE* pTasks, HTASKITEM hTask, IUI_UP
 			else
 				pGI->ClearDoneDate();
 		}
-	
-		if (pTasks->IsAttributeAvailable(TDCA_SUBTASKDONE))
-		{
-			LPCWSTR szSubTaskDone = pTasks->GetTaskSubtaskCompletion(hTask);
-			pGI->bSomeSubtaskDone = (!Misc::IsEmpty(szSubTaskDone) && (szSubTaskDone[0] != '0'));
-		}
 
 		if (pTasks->IsAttributeAvailable(TDCA_TAGS))
 		{
@@ -744,6 +737,7 @@ BOOL CGanttCtrl::UpdateTask(const ITASKLISTBASE* pTasks, HTASKITEM hTask, IUI_UP
 		// Always update these
 		pGI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pGI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
+		pGI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
 	}
 
 	// detect update
@@ -933,9 +927,7 @@ void CGanttCtrl::BuildTreeItem(const ITASKLISTBASE* pTasks, HTASKITEM hTask,
 		pGI->nPercent = pTasks->GetTaskPercentDone(hTask, TRUE);
 		pGI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pGI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
-
-		LPCWSTR szSubTaskDone = pTasks->GetTaskSubtaskCompletion(hTask);
-		pGI->bSomeSubtaskDone = (!Misc::IsEmpty(szSubTaskDone) && (szSubTaskDone[0] != '0'));
+		pGI->bSomeSubtaskDone = pTasks->IsTaskPartlyDone(hTask);
 
 		time64_t tDate = 0;
 

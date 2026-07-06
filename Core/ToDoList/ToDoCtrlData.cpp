@@ -3692,7 +3692,7 @@ BOOL CToDoCtrlData::TaskHasCompletedSubtasks(const TODOSTRUCTURE* pTDS) const
 			return TRUE;
 		
 		// Grandchildren
-		if (TaskHasCompletedSubtasks(pTDSChild))
+		if (TaskHasCompletedSubtasks(pTDSChild)) // RECURSIVE
 			return TRUE;
 	}
 	
