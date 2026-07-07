@@ -21,7 +21,6 @@ namespace EvidenceBoardUIExtension
 		public bool IsFlagged { get; private set; }
 		public bool IsParent { get; private set; }
 		public bool IsTopLevel { get; private set; }
-		public bool SomeSubtasksDone { get; private set; }
 		public bool IsLocked { get; private set; }
 
 		public DateTime StartDate, EndDate;
@@ -110,7 +109,6 @@ namespace EvidenceBoardUIExtension
 			IsTopLevel = (task.GetParentID() == 0);
 			Done = task.IsDone();
 			GoodAsDone = task.IsGoodAsDone();
-			SomeSubtasksDone = task.HasSomeSubtasksDone();
 			IsLocked = task.IsLocked(true);
 
 			StartDate = task.GetStartDate(true);
@@ -400,9 +398,6 @@ namespace EvidenceBoardUIExtension
 
 			if (task.IsAttributeAvailable(Task.Attribute.Color))
 				TextColor = task.GetTextDrawingColor();
-
-			if (task.IsAttributeAvailable(Task.Attribute.SubtaskDone))
-				SomeSubtasksDone = task.HasSomeSubtasksDone();
 
 			if (task.HasAttribute(Task.Attribute.StartDate))
 				StartDate = task.GetStartDate(true);

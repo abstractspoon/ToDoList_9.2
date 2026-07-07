@@ -839,7 +839,6 @@ BOOL CKanbanCtrl::AddTaskToData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, DW
 			return FALSE;
 
 		pKI->bDone = pTasks->IsTaskDone(hTask);
-		pKI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
 		pKI->bParent = pTasks->IsTaskParent(hTask);
 		pKI->dwParentID = dwParentID;
 		pKI->bLocked = pTasks->IsTaskLocked(hTask, true);
@@ -847,12 +846,11 @@ BOOL CKanbanCtrl::AddTaskToData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, DW
 		pKI->bFlagged = (pTasks->IsTaskFlagged(hTask, false) ? TRUE : FALSE); // NOT calculated
 		pKI->nPosition = pTasks->GetTaskPosition(hTask);
 		pKI->sFullPosition = pTasks->GetTaskPositionString(hTask); // for 'Unsorting'
+		pKI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
+		pKI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		pKI->SetColor(pTasks->GetTaskTextColor(hTask));
 
-		LPCWSTR szSubTaskDone = pTasks->GetTaskSubtaskCompletion(hTask);
-		pKI->bSomeSubtaskDone = (!Misc::IsEmpty(szSubTaskDone) && (szSubTaskDone[0] != '0'));
-	
 		if (dwParentID)
 		{
 			const KANBANITEM* pKIParent = m_data.GetItem(dwParentID);
@@ -1006,12 +1004,6 @@ BOOL CKanbanCtrl::UpdateData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, BOOL 
 					bRebuild = TRUE;
 			}
 
-			if (pTasks->IsAttributeAvailable(TDCA_SUBTASKDONE))
-			{
-				LPCWSTR szSubTaskDone = pTasks->GetTaskSubtaskCompletion(hTask);
-				pKI->bSomeSubtaskDone = (!Misc::IsEmpty(szSubTaskDone) && (szSubTaskDone[0] != '0'));
-			}
-
 			if (pTasks->IsAttributeAvailable(TDCA_ICON))
 				pKI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
 
@@ -1086,6 +1078,7 @@ BOOL CKanbanCtrl::UpdateData(const ITASKLISTBASE* pTasks, HTASKITEM hTask, BOOL 
 
 			pKI->bLocked = pTasks->IsTaskLocked(hTask, true); // calculated
 			pKI->bParent = pTasks->IsTaskParent(hTask);
+			pKI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 		}
 	}
 		

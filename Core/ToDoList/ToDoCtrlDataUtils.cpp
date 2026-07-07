@@ -5097,13 +5097,10 @@ BOOL CTDCTaskExporter::ExportAllTaskAttributes(const TODOITEM* pTDI, const TODOS
 	// priority color
 	tasks.SetTaskPriorityColor(hTask, GetPriorityColor(nHighestPriority));
 
-	// 'good as done'
-	if (m_calculator.IsTaskDone(pTDI, pTDS))
-		tasks.SetTaskGoodAsDone(hTask, TRUE);
-
-	// subtask completion
-	if (pTDS->HasSubTasks())
-		tasks.SetTaskSubtaskCompletion(hTask, m_formatter.GetTaskSubtaskCompletion(pTDI, pTDS));
+	// subtask related
+	tasks.SetTaskGoodAsDone(hTask, m_calculator.IsTaskDone(pTDI, pTDS));
+	tasks.SetTaskPartlyDone(hTask, m_data.TaskHasCompletedSubtasks(pTDS));
+	tasks.SetTaskSubtaskCompletion(hTask, m_formatter.GetTaskSubtaskCompletion(pTDI, pTDS));
 
 	// Calculated Custom attributes
 	ExportAllCalculatedTaskCustomAttributes(pTDI, pTDS, tasks, hTask);
@@ -5362,15 +5359,16 @@ BOOL CTDCTaskExporter::ExportMatchingTaskAttributes(const TODOITEM* pTDI, const 
 				tasks.SetTaskCalcTimeRemaining(hTask, dTime, nUnits);
 		}
 
-		// done date
+		// Completion (always)
 		if (bDone)
 		{
 			tasks.SetTaskDoneDate(hTask, pTDI->dateDone);
 			tasks.SetTaskGoodAsDone(hTask, TRUE);
 		}
-		else if (m_calculator.IsTaskDone(pTDI, pTDS))
+		else
 		{
-			tasks.SetTaskGoodAsDone(hTask, TRUE);
+			tasks.SetTaskGoodAsDone(hTask, m_calculator.IsTaskDone(pTDI, pTDS));
+			tasks.SetTaskPartlyDone(hTask, m_data.TaskHasCompletedSubtasks(pTDS));
 		}
 
 		// add due date if we're filtering by due date
@@ -5458,9 +5456,10 @@ BOOL CTDCTaskExporter::ExportMatchingTaskAttributes(const TODOITEM* pTDI, const 
 		tasks.SetTaskDoneDate(hTask, pTDI->dateDone);
 		tasks.SetTaskGoodAsDone(hTask, TRUE);
 	}
-	else if (m_calculator.IsTaskDone(pTDI, pTDS))
+	else
 	{
-		tasks.SetTaskGoodAsDone(hTask, TRUE);
+		tasks.SetTaskGoodAsDone(hTask, m_calculator.IsTaskDone(pTDI, pTDS));
+		tasks.SetTaskPartlyDone(hTask, m_data.TaskHasCompletedSubtasks(pTDS));
 	}
 
 	// assigned task color
