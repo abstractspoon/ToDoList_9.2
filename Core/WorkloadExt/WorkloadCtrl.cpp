@@ -939,17 +939,16 @@ void CWorkloadCtrl::BuildTreeItem(const ITASKLISTBASE* pTasks, HTASKITEM hTask,
 	if (pWI->dwRefID == 0)
 	{
 		pWI->sTitle = pTasks->GetTaskTitle(hTask);
-		pWI->bDone = pTasks->IsTaskDone(hTask);
-		pWI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
 		pWI->bParent = pTasks->IsTaskParent(hTask);
 		pWI->nPercent = pTasks->GetTaskPercentDone(hTask, TRUE);
 		pWI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pWI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
+		pWI->bDone = pTasks->IsTaskDone(hTask);
+		pWI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
 		pWI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		GetTaskAllocTo(pTasks, hTask, pWI->aAllocTo);
 		Misc::AppendItems(pWI->aAllocTo, m_aAllocTo, TRUE);
-		
 
 		time64_t tDate = 0;
 

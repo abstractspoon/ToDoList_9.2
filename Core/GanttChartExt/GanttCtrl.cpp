@@ -921,12 +921,12 @@ void CGanttCtrl::BuildTreeItem(const ITASKLISTBASE* pTasks, HTASKITEM hTask,
 	if (pGI->dwRefID == 0)
 	{
 		pGI->sTitle = pTasks->GetTaskTitle(hTask);
-		pGI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
 		pGI->sAllocTo = GetTaskAllocTo(pTasks, hTask);
 		pGI->bParent = pTasks->IsTaskParent(hTask);
 		pGI->nPercent = pTasks->GetTaskPercentDone(hTask, TRUE);
 		pGI->bLocked = pTasks->IsTaskLocked(hTask, true);
 		pGI->bHasIcon = !Misc::IsEmpty(pTasks->GetTaskIcon(hTask));
+		pGI->bGoodAsDone = pTasks->IsTaskGoodAsDone(hTask);
 		pGI->bPartlyDone = pTasks->IsTaskPartlyDone(hTask);
 
 		time64_t tDate = 0;

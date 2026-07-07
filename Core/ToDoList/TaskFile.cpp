@@ -4169,9 +4169,9 @@ BOOL CTaskFile::SetTaskSubtaskCompletion(HTASKITEM hTask, const CString& sSubtas
 	return SetTaskString(hTask, TDL_TASKSUBTASKDONE, sSubtaskDone);
 }
 
-BOOL CTaskFile::SetTaskPartiallyDone(HTASKITEM hTask, BOOL bPartial)
+BOOL CTaskFile::SetTaskPartlyDone(HTASKITEM hTask, BOOL bPartly)
 {
-	if (bPartial)
+	if (bPartly)
 		return SetTaskUChar(hTask, TDL_TASKPARTLYDONE, 1);
 
 	// else

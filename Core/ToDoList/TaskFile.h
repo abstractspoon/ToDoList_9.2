@@ -216,9 +216,9 @@ public:
 	BOOL SetTaskHighestPriority(HTASKITEM hTask, int nPriority);
 	BOOL SetTaskHighestRisk(HTASKITEM hTask, int nRisk);
 	BOOL SetTaskCalcCost(HTASKITEM hTask, double dCost);
-	BOOL SetTaskPartiallyDone(HTASKITEM hTask, BOOL bPartial);
 	BOOL SetTaskSubtaskCompletion(HTASKITEM hTask, const CString& sSubtaskDone);
-	BOOL SetTaskGoodAsDone(HTASKITEM hTask, BOOL bHasIncomplete);
+	BOOL SetTaskGoodAsDone(HTASKITEM hTask, BOOL bDone);
+	BOOL SetTaskPartlyDone(HTASKITEM hTask, BOOL bPartly);
 	BOOL SetTaskPath(HTASKITEM hTask, const CString& sPath);
 	BOOL SetTaskFlag(HTASKITEM hTask, BOOL bFlag, BOOL bCalc);
 	BOOL SetTaskLock(HTASKITEM hTask, BOOL bLock, BOOL bCalc);
