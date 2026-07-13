@@ -83,7 +83,6 @@ const int MIN_LABEL_EDIT_WIDTH	= GraphicsMisc::ScaleByDPIFactor(200);
 const int BAR_WIDTH				= GraphicsMisc::ScaleByDPIFactor(6);
 const int LV_PADDING			= GraphicsMisc::ScaleByDPIFactor(3);
 const int CHECKBOX_PADDING		= GraphicsMisc::ScaleByDPIFactor(1);
-const int ATTRIB_INDENT			= GraphicsMisc::ScaleByDPIFactor(6);
 const int TIP_PADDING			= GraphicsMisc::ScaleByDPIFactor(4);
 const int DEF_IMAGE_SIZE		= GraphicsMisc::ScaleByDPIFactor(16);
 const int LEVEL_INDENT			= GraphicsMisc::ScaleByDPIFactor(16);
@@ -618,13 +617,18 @@ int CKanbanColumnCtrl::CalcAvailableAttributeWidth(int nColWidth) const
 		nColWidth -= GetSystemMetrics(SM_CXVSCROLL);
 	}
 
+	if (HasOption(KBCF_SHOWCOMPLETIONCHECKBOXES))
+	{
+		nColWidth -= CEnImageList::GetImageSize(m_ilCheckboxes);
+		nColWidth -= (CHECKBOX_PADDING * 2);
+	}
+
 	int nAvailWidth = (nColWidth - (2 * LV_PADDING));
 
 	if (HasOption(KBCF_SHOWTASKCOLORASBAR))
 		nAvailWidth -= BAR_WIDTH;
 
 	nAvailWidth -= (TEXT_BORDER.left + TEXT_BORDER.right);
-	nAvailWidth -= ATTRIB_INDENT;
 
 	return nAvailWidth;
 }
@@ -1155,6 +1159,8 @@ void CKanbanColumnCtrl::DrawItemBar(CDC* pDC, const KANBANITEM* pKI, CRect& rIte
 
 		rItem.left = rBar.right;
 	}
+
+	rItem.left += TEXT_BORDER.left;
 }
 
 void CKanbanColumnCtrl::DrawItemCheckbox(CDC* pDC, const KANBANITEM* pKI, CRect& rItem)
@@ -1950,7 +1956,7 @@ BOOL CKanbanColumnCtrl::IsSorted() const
 	// Because we overload the handling of TVM_GETNEXTITEM 
 	// to skip header items (See OnGetNextItem) we have to 
 	// disable that overloading for the duration of our check 
-	// else we'll never see the header item
+	// else we'll never see the header items
 	CAutoFlag af(m_bCheckingIsSorted, TRUE);
 
 	HTREEITEM hti = GetFirstItem();

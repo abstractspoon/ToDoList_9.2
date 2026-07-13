@@ -16,7 +16,7 @@ using ImageHelper;
 using UIComponents;
 
 using BaseNode = RadialTree.TreeNode<uint>;
-
+	
 namespace EvidenceBoardUIExtension
 {
     public delegate bool EditTaskLabelEventHandler(object sender, uint taskId);
@@ -2071,6 +2071,9 @@ namespace EvidenceBoardUIExtension
 		{
 			m_EditTimer.Stop();
 			m_PreviouslySelectedTask = (Focused ? SingleSelectedTask : null);
+
+			if (e.Button != MouseButtons.Left)
+				return;
 
 			TaskItem taskItem = null;
 			BaseNode node = HitTestNode(e.Location, true);

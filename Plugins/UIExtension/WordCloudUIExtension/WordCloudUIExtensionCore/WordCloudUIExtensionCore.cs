@@ -52,8 +52,9 @@ namespace WordCloudUIExtension
 		private Dictionary<UInt32, CloudTaskItem> m_Items;
 		private TdlCloudControl m_WordCloud;
         private IBlacklist m_ExcludedWords;
+		private UIExtension.IdleRedraw m_IdleTasks = new UIExtension.IdleRedraw();
 
-        private StyleComboBox m_StylesCombo;
+		private StyleComboBox m_StylesCombo;
 		private Label m_StylesLabel;
 		private AttributeComboBox m_AttributeCombo;
         private Label m_AttributeLabel;
@@ -216,10 +217,11 @@ namespace WordCloudUIExtension
 					}
 				}
 			}
-			else if (tasks.IsAttributeAvailable(Task.Attribute.Color))
-			{
-				m_TaskMatchesList.Invalidate();
-			}
+
+			// For reasons I don't yet understand, invalidation after a 
+			// task update does NOT ALWAYS result in a subsequent repaint
+			// so we solve it with a delayed-redraw
+			m_IdleTasks.Redraw();
 		}
 
 		private void OnUpdateTimer(object sender, EventArgs e)
@@ -411,7 +413,7 @@ namespace WordCloudUIExtension
 
 		public bool DoIdleProcessing()
 		{
-			return false;
+			return m_IdleTasks.Process(this);
 		}
 
 		public bool GetLabelEditRect(ref Int32 left, ref Int32 top, ref Int32 right, ref Int32 bottom)
