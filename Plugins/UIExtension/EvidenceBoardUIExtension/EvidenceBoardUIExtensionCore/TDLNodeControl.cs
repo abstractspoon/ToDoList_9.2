@@ -1730,9 +1730,11 @@ namespace EvidenceBoardUIExtension
 			DrawTaskIcon(graphics, taskItem, taskRect, backColor);
 			DrawTaskImageExpansionButton(graphics, taskItem, taskRect, backColor);
 
-			// Title
+			// Text, using 'TextRenderer' for consistency with the core app
 			var titleRect = CalcTaskLabelRect(taskItem, taskRect, true);
-			graphics.DrawString(taskItem.ToString(), GetTaskLabelFont(taskItem), new SolidBrush(textColor), titleRect);
+			var flags = (TextFormatFlags.Top | TextFormatFlags.WordBreak | TextFormatFlags.EndEllipsis);
+
+			TextRenderer.DrawText(graphics, taskItem.ToString(), GetTaskLabelFont(taskItem), titleRect, textColor, flags);
 
 			// Image
 			if (taskItem.IsImageExpanded)
