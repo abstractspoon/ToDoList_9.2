@@ -2597,6 +2597,7 @@
 #define IDS_MESSAGE_UNMATCHEDSEARCHGROUPS 51686
 #define IDS_TOOLS_REMAININGCOUNT        51687
 #define IDS_CUSTATTRIB_REMAININGCOUNT   51688
+#define IDS_FP_REQUIRED                 51692
 
 // Next default values for new objects
 // 

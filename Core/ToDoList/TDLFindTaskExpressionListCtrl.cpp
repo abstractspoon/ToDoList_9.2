@@ -14,6 +14,7 @@
 #include "..\shared\GraphicsMisc.h"
 #include "..\Shared\DateHelper.h"
 #include "..\Shared\EnColorDialog.h"
+#include "..\Shared\WndPrompt.h"
 
 #include "..\Interfaces\ContentMgr.h"
 
@@ -1590,15 +1591,19 @@ COLORREF CTDLFindTaskExpressionListCtrl::GetItemTextColor(int nItem, int nCol, B
 		switch (nCol)
 		{
 		case ATTRIB_COL:
-			// Show groups less intensly
+			// Show groups less intensely
 			if (m_aSearchParams[nItem].GetAttribType() == FT_GROUP)
-				return ::GetSysColor(COLOR_3DDKSHADOW);
+			{
+				return CWndPrompt::GetTextColor();
+			}
 			break;
 
 		case ANDOR_COL:
-			// Show 'and/or' deactivated if there no following rule
+			// Show 'and/or' deactivated if there no subsequent rule
 			if (m_aSearchParams.IsLastRule(nItem) || m_aSearchParams.IsLastRuleInGroup(nItem))
+			{
 				return ANDOR_DEACTIVATEDCOLOR;
+			}
 			break;
 		}
 	}
@@ -1606,10 +1611,83 @@ COLORREF CTDLFindTaskExpressionListCtrl::GetItemTextColor(int nItem, int nCol, B
 	return CInputListCtrl::GetItemTextColor(nItem, nCol, bSelected, bDropHighlighted, bWndFocus);
 }
 
+BOOL CTDLFindTaskExpressionListCtrl::CellRequiresValue(int nRow, int nCol) const
+{
+	if (IsPrompt(nRow))
+		return FALSE;
+
+	const SEARCHPARAM& rule = m_aSearchParams[nRow];
+
+	switch (nCol)
+	{
+	case ATTRIB_COL:
+		return TRUE;
+
+	case OPERATOR_COL:
+		return !rule.TypeIs(FT_GROUP);
+
+	case ANDOR_COL:
+		return FALSE;
+
+	case VALUE_COL:
+		if (rule.OperatorIs(FOP_SET) || rule.OperatorIs(FOP_NOT_SET))
+		{
+			return FALSE;
+		}
+		else
+		{
+			switch (rule.GetAttribType())
+			{
+			case FT_BOOL:
+				ASSERT(0); // Handled above
+				return FALSE;
+
+			case FT_GROUP:
+			case FT_STRING:
+				return FALSE;
+
+			case FT_DEPENDENCY:
+			case FT_DATE:
+			case FT_DATERELATIVE:
+			case FT_DOUBLE:
+			case FT_TIMEPERIOD:
+			case FT_INTEGER:
+			case FT_RECURRENCE:
+			case FT_COLOR:
+			case FT_ICON:
+				break;
+
+			default:
+				ASSERT(0);
+				break;
+			}
+		}
+		break;
+	}
+
+	// All else
+	return TRUE;
+}
+
 void CTDLFindTaskExpressionListCtrl::DrawCellText(CDC* pDC, int nRow, int nCol, 
 													const CRect& rText, const CString& sText, 
 													COLORREF crText, UINT nDrawTextFlags)
 {
+	// If a required cell value is empty, handle that first
+	if (sText.IsEmpty() && CellRequiresValue(nRow, nCol))
+	{
+		CInputListCtrl::DrawCellText(pDC,
+									 nRow,
+									 nCol,
+									 rText,
+									 CEnString(IDS_FP_REQUIRED),
+									 CWndPrompt::GetTextColor(),
+									 nDrawTextFlags);
+
+		return;
+	}
+
+	// else
 	if (!IsPrompt(nRow))
 	{
 		const SEARCHPARAM& rule = m_aSearchParams[nRow];

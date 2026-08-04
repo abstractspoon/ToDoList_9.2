@@ -1231,6 +1231,7 @@ FIND_ATTRIBTYPE SEARCHPARAM::GetAttribType(TDC_ATTRIBUTE nAttribID, BOOL bRelati
 
 	case TDCA_TIMEESTIMATE:
 	case TDCA_TIMESPENT:
+	case TDCA_TIMEREMAINING:
 		return FT_TIMEPERIOD;
 
 	case TDCA_COST:
@@ -1264,11 +1265,12 @@ FIND_ATTRIBTYPE SEARCHPARAM::GetAttribType(TDC_ATTRIBUTE nAttribID, BOOL bRelati
 
 BOOL SEARCHPARAM::IsValidOperator(FIND_ATTRIBTYPE nType, FIND_OPERATOR nOp)
 {
+	if (nType == FT_GROUP)
+		return (nOp == FOP_NONE);
+
+	// else
 	switch (nOp)
 	{
-	case FOP_NONE:
-		return TRUE;
-
 	case FOP_EQUALS:
 	case FOP_NOT_EQUALS:
 		return (nType != FT_BOOL);
