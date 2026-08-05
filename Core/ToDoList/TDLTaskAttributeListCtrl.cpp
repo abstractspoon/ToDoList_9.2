@@ -3726,7 +3726,7 @@ void CTDLTaskAttributeListCtrl::OnComboSelChange(UINT nCtrlID)
 				sNewValue = Misc::Format(dTime);
 
 			// If the combo is visible, use the cell value as a 
-			// scratch pad but WITHOUT notifying the parent
+			// scratch pad but DON'T notify the parent
 			if (m_cbTimeOfDay.IsWindowVisible())
 			{
 				SetItemText(nRow, VALUE_COL, sNewValue);
