@@ -129,7 +129,7 @@ void CTDLFindTaskExpressionListCtrl::PreSubclassWindow()
 	m_header.EnableTracking(FALSE);
 	ShowGrid(TRUE, TRUE);
 
-	AddCol(CEnString(IDS_FT_ATTRIB), 120);
+	AddCol(CEnString(IDS_FT_ATTRIB), 120, ILCT_COMBO);
 	AddCol(CEnString(IDS_FT_MATCHES), 160, ILCT_COMBO);
 	AddCol(CEnString(IDS_FT_VALUE), 130, ILCT_TEXT); // overridden in GetCellType()
 	AddCol(CEnString(IDS_FT_ANDOR), 60, ILCT_COMBO);
