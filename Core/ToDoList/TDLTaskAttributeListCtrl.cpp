@@ -2699,7 +2699,8 @@ void CTDLTaskAttributeListCtrl::PrepareSingleSelCombo(int nRow, const CStringArr
 	CString sValue = GetItemText(nRow, VALUE_COL);
 	combo.AddUniqueItem(sValue);
 
-	combo.SelectString(-1, sValue);
+	int nFind = combo.FindStringExact(-1, sValue);
+	combo.SetCurSel(nFind);
 }
 
 void CTDLTaskAttributeListCtrl::PrepareControl(CWnd& ctrl, int nRow, int nCol)
