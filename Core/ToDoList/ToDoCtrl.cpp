@@ -175,7 +175,12 @@ CToDoCtrl::IDLETASKS::IDLETASKS(CToDoCtrl& tdc) : m_tdc(tdc)
 {
 }
 
-void CToDoCtrl::IDLETASKS::RefreshAttributeValues(const CTDCAttributeMap& mapAttribIDs)
+void CToDoCtrl::IDLETASKS::RefreshAttributeValues()
+{
+	RefreshAttributeValues(TDCA_ALL, FALSE);
+}
+
+void CToDoCtrl::IDLETASKS::RefreshAttributeValues(const CTDCAttributeMap& mapAttribIDs, BOOL bTaskMod)
 {
 	ASSERT(!mapAttribIDs.IsEmpty());
 
@@ -189,9 +194,12 @@ void CToDoCtrl::IDLETASKS::RefreshAttributeValues(const CTDCAttributeMap& mapAtt
 		{
 			m_mapRefreshAttribIDs.Append(mapAttribIDs);
 
-			// Always add modification attributes
-			m_mapRefreshAttribIDs.Add(TDCA_LASTMODBY);
-			m_mapRefreshAttribIDs.Add(TDCA_LASTMODDATE);
+			// Always add modification attributes for task edits
+			if (bTaskMod)
+			{
+				m_mapRefreshAttribIDs.Add(TDCA_LASTMODBY);
+				m_mapRefreshAttribIDs.Add(TDCA_LASTMODDATE);
+			}
 		}
 	}
 }
@@ -5234,7 +5242,7 @@ void CToDoCtrl::SetModified(const CTDCAttributeMap& mapAttribIDs, const CDWordAr
 	}
 	else if (m_ctrlAttributes.IsAnyTaskSelected(aModTaskIDs))
 	{
-		m_idleTasks.RefreshAttributeValues(mapAttribIDs);
+		m_idleTasks.RefreshAttributeValues(mapAttribIDs, !(bNewTask || bNewTaskTitleEdit));
 	}
 
 	if (mapAttribIDs.Has(TDCA_LOCK))
