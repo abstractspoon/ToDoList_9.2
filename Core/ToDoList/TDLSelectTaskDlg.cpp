@@ -111,6 +111,6 @@ void CTDLSelectTaskDlg::OnShowDoneTasks()
 {
 	UpdateData();
 
-	m_cbTasks.Populate(m_tasks, m_ilTasks, m_bShowDoneTasks);
+	m_cbTasks.Populate(m_tasks, m_ilTasks, m_aRecentTaskIDs, m_bShowDoneTasks);
 	m_cbTasks.SetSelectedTaskID(m_dwSelTaskID);
 }
