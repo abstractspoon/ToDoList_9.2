@@ -2463,14 +2463,13 @@ LRESULT CTreeListSyncer::ScWindowProc(HWND hRealWnd, UINT msg, WPARAM wp, LPARAM
 		break;
 
 	case WM_PAINT:
-		if (IsList(hRealWnd))
-		{
-// 			FileMisc::EnableLogging(TRUE);
-// 			CScopedLogTimer timer(_T("CTreeListSyncer(ListDraw)"));
-
+		if (!m_bSavingToImage && IsList(hRealWnd))
 			RefreshListDrawColAttributes(hRealWnd);
-			return ScDefault(hRealWnd);
-		}
+		break;
+
+	case WM_PRINT:
+		if (IsList(hRealWnd))
+			RefreshListDrawColAttributes(hRealWnd);
 		break;
 
 	case TVM_INSERTITEM:
