@@ -537,6 +537,9 @@ BOOL CTDLTaskListCtrl::SetSortNoneGroupBelow(BOOL bBelow)
 void CTDLTaskListCtrl::OnBuildComplete()
 {
 	UpdateGroupHeaders();
+	
+	if (GetGroupCount())
+		Resort();
 }
 
 BOOL CTDLTaskListCtrl::UpdateGroupHeaders()
@@ -589,7 +592,6 @@ BOOL CTDLTaskListCtrl::UpdateGroupHeaders()
 		PostResize();
 
 	RestoreSelection(cache, TRUE);
-
 	return TRUE;
 }
 
