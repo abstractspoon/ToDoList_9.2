@@ -4720,7 +4720,7 @@ void CGanttCtrl::CalcMinMonthWidths()
 				
 				for (int nMonth = 1; nMonth <= 12; nMonth += 3)
 				{
-					CString sText = FormatHeaderText(nDisplay, 1, 2025);
+					CString sText = FormatHeaderText(nDisplay, nMonth, 2025);
 					
 					int nWidth = dcClient.GetTextExtent(sText).cx;
 					nMinTextWidth = max(nWidth, nMinTextWidth);
@@ -4738,7 +4738,7 @@ void CGanttCtrl::CalcMinMonthWidths()
 				
 				for (int nMonth = 1; nMonth <= 12; nMonth++)
 				{
-					CString sText = FormatHeaderText(nDisplay, 1, 2025);
+					CString sText = FormatHeaderText(nDisplay, nMonth, 2025);
 					
 					int nTextWidth = dcClient.GetTextExtent(sText).cx;
 					nMinTextWidth = max(nTextWidth, nMinTextWidth);
