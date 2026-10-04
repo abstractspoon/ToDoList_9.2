@@ -6701,13 +6701,7 @@ void CTabbedToDoCtrl::SyncListSelectionToTree(BOOL bEnsureSelection)
 
 	BOOL bSelChange = FALSE;
 	
-	// optimisation when all items selected
-	if (TSH().GetCount() == m_taskTree.GetItemCount())
-	{
-		m_taskList.SelectAll();
-		bSelChange = (m_taskList.GetItemCount() != m_taskTree.GetItemCount());
-	}
-	else if (m_taskList.GetItemCount())
+	if (m_taskList.GetItemCount())
 	{
 		// save current states
 		TDCSELECTIONCACHE cacheList, cacheTree;
