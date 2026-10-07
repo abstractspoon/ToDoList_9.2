@@ -1116,6 +1116,7 @@ void CGanttChartWnd::UpdateGanttCtrlPreferences()
 LRESULT CGanttChartWnd::OnGanttNotifyDateChange(WPARAM wp, LPARAM lp)
 {
 	COleDateTime dtStart, dtDue;
+
 	if (m_ctrlGantt.GetSelectedTaskDates(dtStart, dtDue))
 	{
 		IUITASKMOD mod[2] = { { TDCA_NONE, 0 }, { TDCA_NONE, 0 } };

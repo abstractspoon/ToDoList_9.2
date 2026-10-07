@@ -443,8 +443,6 @@ void GANTTITEM::ClearDoneDate()
 
 BOOL GANTTITEM::GetStartEndDates(BOOL bCalcParentDates, BOOL bCalcMissingStart, BOOL bCalcMissingDue, COleDateTime& dtStart, COleDateTime& dtDue) const
 {
-	BOOL bDoneSet = FALSE;
-
 	if (bParent && bCalcParentDates)
 	{
 		dtStart = dtMinMaxRange.GetStart();
@@ -455,10 +453,12 @@ BOOL GANTTITEM::GetStartEndDates(BOOL bCalcParentDates, BOOL bCalcMissingStart, 
 		dtStart = dtRange.GetStart();
 		dtDue = dtRange.GetEnd();
 
-		bDoneSet = CDateHelper::IsDateSet(dtDone);
+		BOOL bStartSet = CDateHelper::IsDateSet(dtStart);
+		BOOL bDueSet = CDateHelper::IsDateSet(dtDue);
+		BOOL bDoneSet = CDateHelper::IsDateSet(dtDone);
 
 		// do we need to calculate due date?
-		if (!CDateHelper::IsDateSet(dtDue) && bCalcMissingDue)
+		if (!bDueSet && bCalcMissingDue)
 		{
 			// always take completed date if that is set
 			if (bDoneSet)
@@ -467,7 +467,9 @@ BOOL GANTTITEM::GetStartEndDates(BOOL bCalcParentDates, BOOL bCalcMissingStart, 
 			}
 			else // take later of start date and today
 			{
-				dtDue = CDateHelper::GetDateOnly(dtStart);
+				if (bStartSet)
+					dtDue = CDateHelper::GetDateOnly(dtStart);
+
 				CDateHelper::Max(dtDue, CDateHelper::GetDate(DHD_TODAY));
 	
 				// and move to end of the day
@@ -478,11 +480,14 @@ BOOL GANTTITEM::GetStartEndDates(BOOL bCalcParentDates, BOOL bCalcMissingStart, 
 		}
 	
 		// do we need to calculate start date?
-		if (!CDateHelper::IsDateSet(dtStart) && bCalcMissingStart)
+		if (!bStartSet && bCalcMissingStart)
 		{
 			// take earlier of due or completed date
-			dtStart = CDateHelper::GetDateOnly(dtDue);
-			CDateHelper::Min(dtStart, CDateHelper::GetDateOnly(dtDone));
+			if (bDueSet)
+				dtStart = CDateHelper::GetDateOnly(dtDue);
+
+			if (bDoneSet)
+				CDateHelper::Min(dtStart, CDateHelper::GetDateOnly(dtDone));
 	
 			// take the earlier of that and 'today'
 			CDateHelper::Min(dtStart, CDateHelper::GetDate(DHD_TODAY));
