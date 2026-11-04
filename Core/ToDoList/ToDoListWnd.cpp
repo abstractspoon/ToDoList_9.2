@@ -4478,7 +4478,7 @@ TDC_FILE CToDoListWnd::DelayOpenTaskList(LPCTSTR szFilePath)
 		// and the user wants notification
 		int nNotifyDueBy = Prefs().GetNotifyDueByOnLoad();
 
-		if ((nNotifyDueBy != PFP_DONTNOTIFY) && CDateHelper::IsDateSet(dtEarliest.m_dt))
+		if ((nNotifyDueBy != PFP_DONTNOTIFY) && CDateHelper::IsDateSet(dtEarliest))
 		{
 			// check the date against when the user wants notifying
 			DH_DATE nDate = DHD_TODAY;

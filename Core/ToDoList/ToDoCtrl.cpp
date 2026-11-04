@@ -4569,6 +4569,8 @@ TDC_FILE CToDoCtrl::Load(const CString& sFilePath, CTaskFile& tasks/*out*/, LPCT
 
 BOOL CToDoCtrl::DelayLoad(const CString& sFilePath, COleDateTime& dtEarliestDue)
 {
+	CDateHelper::ClearDate(dtEarliestDue);
+
 	// Can only delay load an unloaded tasklist
 	if (!HasFilePath())
 	{
